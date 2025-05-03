@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import OpportunityCard from "./components/OpportunityCard";
 import SubmitOpportunityForm from "./components/SubmitOpportunityForm";
-
+import LoginPage from "./components/LoginPage"
 function App() {
   const [loggedIn, setLoggedIn] = useState(false); // Track login state
   const [opportunities, setOpportunities] = useState([]);
