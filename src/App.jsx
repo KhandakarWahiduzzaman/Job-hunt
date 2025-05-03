@@ -1,35 +1,101 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import axios from "axios";
+import OpportunityCard from "./components/OpportunityCard";
+import SubmitOpportunityForm from "./components/SubmitOpportunityForm";
+import LoginPage from "./components/LoginPage";
+import DashboardLayout from "./components/DashboardLayout";
+import Jobs from "./components/Jobs"; // Import the Jobs component
+import Header from "./components/Header";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [loggedIn, setLoggedIn] = useState(false); // Track login state
+  const [opportunities, setOpportunities] = useState([]);
+  const [schoolFilter, setSchoolFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState("");
+  const [role, setRole] = useState(null); // new: track role
+
+  const handleLogout = () => {
+    setLoggedIn(false);
+    setRole(null);
+  };
+  
+  useEffect(() => {
+    if (loggedIn) fetchOpportunities();
+  }, [loggedIn]);
+
+  const fetchOpportunities = () => {
+    axios.get("http://localhost:5000/api/opportunities")
+      .then(res => setOpportunities(res.data))
+      .catch(err => console.error("Error fetching opportunities", err));
+  };
+
+  if (!loggedIn) {
+    return (
+      <LoginPage
+        onLogin={(userRole) => {
+
+          setLoggedIn(true);
+          setRole(userRole);
+        }}
+      />
+    );
+  }
+  
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <DashboardLayout>
+<Header role={role} onLogout={handleLogout} />
+    
+    <div className="p-6 max-w-4xl mx-auto">
+     
+   
+
+
+
+      {role === "counselor" && (
+        <SubmitOpportunityForm onSubmitSuccess={fetchOpportunities} />
+      )}
+
+      <div className="flex flex-wrap gap-4 justify-center mb-6">
+        <select
+          value={schoolFilter}
+          onChange={(e) => setSchoolFilter(e.target.value)}
+          className="border p-2 rounded shadow-sm w-52"
+        >
+          <option value="">All Schools</option>
+          <option value="Baruch College">Baruch College</option>
+          <option value="Hunter College">Hunter College</option>
+          <option value="Queens College">Queens College</option>
+        </select>
+
+        <select
+          value={typeFilter}
+          onChange={(e) => setTypeFilter(e.target.value)}
+          className="border p-2 rounded shadow-sm w-52"
+        >
+          <option value="">All Types</option>
+          <option value="Internship">Internship</option>
+          <option value="Full-Time">Full-Time</option>
+          <option value="Part-Time">Part-Time</option>
+          <option value="Other">Other</option>
+        </select>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+        {opportunities
+          .filter(
+            (opp) =>
+              (schoolFilter === "" || opp.school === schoolFilter) &&
+              (typeFilter === "" || opp.type === typeFilter)
+          )
+          .map((opp, i) => (
+            <OpportunityCard key={i} opp={opp} />
+          ))}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+            <Jobs></Jobs>
+      </div>
+    </DashboardLayout>
+  );
 }
 
-export default App
+export default App;
