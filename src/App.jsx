@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import OpportunityCard from "./components/OpportunityCard";
 import SubmitOpportunityForm from "./components/SubmitOpportunityForm";
-
+import Jobs from "./components/Jobs"
 function App() {
   const [opportunities, setOpportunities] = useState([]);
   const [schoolFilter, setSchoolFilter] = useState("");
@@ -60,6 +60,7 @@ function App() {
             <OpportunityCard key={i} opp={opp} />
           ))}
       </div>
+            <Jobs></Jobs>
     </div>
   );
 }
