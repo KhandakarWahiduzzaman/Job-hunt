@@ -28,12 +28,43 @@ const SubmitOpportunityForm = ({ onSubmitSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
-      <h2>Submit New Opportunity</h2>
-      <input name="title" placeholder="Title" value={form.title} onChange={handleChange} required />
-      <input name="link" placeholder="Link" value={form.link} onChange={handleChange} required />
-        {/* School Dropdown */}
-      <select name="school" value={form.school} onChange={handleChange} required>
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow mb-6">
+  <h2 className="text-2xl font-semibold mb-4">Submit New Opportunity</h2>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="flex flex-col">
+      <label className="mb-1 text-sm font-medium text-gray-700">Title</label>
+      <input
+        name="title"
+        value={form.title}
+        onChange={handleChange}
+        required
+        className="border p-2 rounded"
+        placeholder="Enter title"
+      />
+    </div>
+
+    <div className="flex flex-col">
+      <label className="mb-1 text-sm font-medium text-gray-700">Link</label>
+      <input
+        name="link"
+        value={form.link}
+        onChange={handleChange}
+        required
+        className="border p-2 rounded"
+        placeholder="Enter link"
+      />
+    </div>
+
+    <div className="flex flex-col">
+      <label className="mb-1 text-sm font-medium text-gray-700">School</label>
+      <select
+        name="school"
+        value={form.school}
+        onChange={handleChange}
+        required
+        className="border p-2 rounded"
+      >
         <option value="">Select a School</option>
         <option value="Baruch College">Baruch College</option>
         <option value="Brooklyn College">Brooklyn College</option>
@@ -60,19 +91,48 @@ const SubmitOpportunityForm = ({ onSubmitSuccess }) => {
         <option value="CUNY Graduate School of Public Health">CUNY SPH</option>
         <option value="CUNY Graduate School of Journalism">CUNY Journalism</option>
       </select>
+    </div>
 
-        {/* Type Dropdown */}
-      <select name="type" value={form.type} onChange={handleChange} required>
+    <div className="flex flex-col">
+      <label className="mb-1 text-sm font-medium text-gray-700">Type</label>
+      <select
+        name="type"
+        value={form.type}
+        onChange={handleChange}
+        required
+        className="border p-2 rounded"
+      >
         <option value="">Select Opportunity Type</option>
         <option value="Internship">Internship</option>
         <option value="Full-Time">Full-Time</option>
         <option value="Part-Time">Part-Time</option>
         <option value="Other">Other</option>
       </select>
+    </div>
 
-      <input name="postedBy" placeholder="Posted By" value={form.postedBy} onChange={handleChange} required />
-      <button type="submit">Submit</button>
-    </form>
+    <div className="flex flex-col md:col-span-2">
+      <label className="mb-1 text-sm font-medium text-gray-700">Posted By</label>
+      <input
+        name="postedBy"
+        value={form.postedBy}
+        onChange={handleChange}
+        required
+        className="border p-2 rounded"
+        placeholder="Enter name"
+      />
+    </div>
+  </div>
+
+  <div className="mt-6 text-right">
+    <button
+      type="submit"
+      className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+    >
+      Submit
+    </button>
+  </div>
+</form>
+
   );
 };
 
