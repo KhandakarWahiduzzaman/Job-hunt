@@ -1,4 +1,4 @@
-# Job-hunt
+# CUNY Career Link
 
 # Website Link: https://job-hunt-production-88e2.up.railway.app/
 
