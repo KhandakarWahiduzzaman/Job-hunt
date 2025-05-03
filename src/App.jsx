@@ -1,16 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import OpportunityCard from "./components/OpportunityCard";
 import SubmitOpportunityForm from "./components/SubmitOpportunityForm";
+import LoginPage from "./components/LoginPage"; // login page component
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false); // Track login state
   const [opportunities, setOpportunities] = useState([]);
   const [schoolFilter, setSchoolFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
+  const [role, setRole] = useState(null); // new: track role
 
+  const handleLogout = () => {
+    setLoggedIn(false);
+    setRole(null);
+  };
+  
   useEffect(() => {
-    fetchOpportunities();
-  }, []);
+    if (loggedIn) fetchOpportunities();
+  }, [loggedIn]);
 
   const fetchOpportunities = () => {
     axios.get("http://localhost:5000/api/opportunities")
@@ -18,17 +26,42 @@ function App() {
       .catch(err => console.error("Error fetching opportunities", err));
   };
 
+  if (!loggedIn) {
+    return (
+      <LoginPage
+        onLogin={(userRole) => {
+
+          setLoggedIn(true);
+          setRole(userRole);
+        }}
+      />
+    );
+  }
+  
+
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <h1 className="text-4xl font-bold text-center mb-6">CUNY Career Link</h1>
 
-      <SubmitOpportunityForm onSubmitSuccess={fetchOpportunities} />
+      <div className="text-right mb-4">
+        <button
+          onClick={handleLogout}
+          className="text-sm text-red-600 border border-red-600 px-3 py-1 rounded hover:bg-red-600 hover:text-white transition"
+        >
+          Logout
+        </button>
+      </div>
+
+
+      {role === "counselor" && (
+        <SubmitOpportunityForm onSubmitSuccess={fetchOpportunities} />
+      )}
 
       <div className="flex flex-wrap gap-4 justify-center mb-6">
         <select
           value={schoolFilter}
           onChange={(e) => setSchoolFilter(e.target.value)}
-          className="border p-2 rounded shadow-sm"
+          className="border p-2 rounded shadow-sm w-52"
         >
           <option value="">All Schools</option>
           <option value="Baruch College">Baruch College</option>
