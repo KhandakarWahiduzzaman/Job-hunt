@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import OpportunityCard from "./components/OpportunityCard";
 import SubmitOpportunityForm from "./components/SubmitOpportunityForm";
+import LoginPage from "./components/LoginPage";
+import DashboardLayout from "./components/DashboardLayout";
+import Jobs from "./components/Jobs"; // Import the Jobs component
+import Header from "./components/Header";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false); // Track login state
@@ -40,16 +44,8 @@ function App() {
 
   return (
     <DashboardLayout>
-<div className="flex justify-between items-center mb-6">
-  <h1 className="text-4xl font-bold">CUNY Career Link</h1>
-  <button
-    onClick={handleLogout}
-    className="text-sm text-red-600 border border-red-600 px-3 py-1 rounded hover:bg-red-600 hover:text-white transition"
-  >
-    Logout
-  </button>
-</div>
-
+<Header role={role} onLogout={handleLogout} />
+    
     <div className="p-6 max-w-4xl mx-auto">
      
    
