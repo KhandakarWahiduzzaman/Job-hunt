@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import OpportunityCard from "./components/OpportunityCard";
 import SubmitOpportunityForm from "./components/SubmitOpportunityForm";
-import LoginPage from "./components/LoginPage"; // login page component
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false); // Track login state
@@ -93,6 +92,7 @@ function App() {
             <OpportunityCard key={i} opp={opp} />
           ))}
       </div>
+            <Jobs></Jobs>
     </div>
   );
 }
